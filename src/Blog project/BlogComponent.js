@@ -1,15 +1,19 @@
 import Container from 'react-bootstrap/esm/Container';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
 import './Blog.css';
 import { useState,useEffect } from 'react';
-import { MocData } from './MocData';
+import { MocData } from '../MocData';
 import {Row,Col} from 'react-bootstrap';
 
 const BlogComponent = () => {
    const [Data,setData] = useState([])
+   const [modalShow, setModalShow] = useState(false);
+
   useEffect(() => {
     setData(MocData);
+    setModalShow(true)
   },[]);
   const selectGrid = (type)=>{
     if(type ==="all"){
@@ -17,6 +21,29 @@ const BlogComponent = () => {
     }else{
         setData(MocData.filter((item)=>item.type===type));
     }
+  }
+  function MyVerticallyCenteredModal(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Enter Your Email
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Email</h4>
+          <input type="email" style={{width:'100%',borderRadius:'5px'}} placeholder='Enter your email'/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Submit</Button>
+        </Modal.Footer>
+      </Modal>
+    );
   }
   return (
     <>
@@ -39,7 +66,7 @@ const BlogComponent = () => {
         <Card.Text>
           {item.description}
         </Card.Text>
-        <Button variant="primary">Read full article</Button>
+        <Button variant="primary" >Read full article</Button>
       </Card.Body>
         </Card>
                 </Col>
@@ -48,6 +75,10 @@ const BlogComponent = () => {
         </Row>
         
     </Container>
+    <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </>
   )
 };
